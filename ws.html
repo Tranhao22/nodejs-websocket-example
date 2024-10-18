@@ -1,0 +1,35 @@
+<h1>
+    Web Socket Example
+</h1>
+<p>
+    open console to see connection.
+</p>
+<input type="text" id="messageInput" placeholder="Type a message...">
+<button id="sendMessage">Send Message</button>
+<p id="response"></p>
+<h2>Webhook Data:</h2>
+<pre id="webhookData"></pre> <!-- Thêm phần để hiển thị dữ liệu webhook -->
+<script>
+    var ws = new WebSocket('ws://localhost:8000');
+
+    ws.onopen = function () {
+        console.log('websocket is connected ...');
+        ws.send('connected');
+    }
+
+    ws.onmessage = function (ev) {
+        console.log('hkhkhkk:', ev.data); // Log dữ liệu nhận được từ máy chủ
+        document.getElementById('response').innerText = ev.data; // Hiển thị phản hồi lên trang
+    }
+
+    // Thêm sự kiện click cho nút gửi
+    document.getElementById('sendMessage').onclick = function () {
+        var message = document.getElementById('messageInput').value; // Lấy giá trị từ ô nhập liệu
+        ws.send(message); // Gửi thông điệp đến máy chủ
+    }
+
+    // Thêm lắng nghe cho dữ liệu webhook
+    function displayWebhookData(data) {
+        document.getElementById('webhookData').innerText = data; // Hiển thị dữ liệu webhook
+    }
+</script>
